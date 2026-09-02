@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Tater's Trucks",
+      "hasCanvas": true,
+      "bodyTextLen": 149,
+      "bodyTextHash": "1e7013ebd1841d032923cff40db9b72ae6a227c7123b1901dcd60b16406927a5",
+      "bodyTextPrefix": "SUPER OFF ROAD TATER'S TRUCKS Four laps. Four trucks. Nitro, bum",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Tater's Trucks",
+      "hasCanvas": true,
+      "bodyTextLen": 149,
+      "bodyTextHash": "1e7013ebd1841d032923cff40db9b72ae6a227c7123b1901dcd60b16406927a5",
+      "bodyTextPrefix": "SUPER OFF ROAD TATER'S TRUCKS Four laps. Four trucks. Nitro, bum",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
