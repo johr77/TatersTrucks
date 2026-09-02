@@ -1,2 +1,8 @@
-npm run dev
 npx --yes serve . -p 8080
+HTML
+npx vite dev --host 127.0.0.1 --port 8080
+VITE
+
+
+npm install
+npm run dev
