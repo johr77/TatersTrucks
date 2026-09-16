@@ -1,5 +1,12 @@
 node_modules/
-.project_id
-.github_repo
+.tanstack/
+.vercel/
 .env
 .env.*
+*.blend1
+.project_id
+.github_repo
+artifacts/
+.grok/preview.log
+.grok/status/
+.node_modules.lock

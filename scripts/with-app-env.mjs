@@ -22,7 +22,7 @@
 import { spawn } from "node:child_process";
 import { readFileSync, realpathSync } from "node:fs";
 import { constants as osConstants } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, join, delimiter } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const APP_ENV_REL_PATH = ".grok/app-env.json";
@@ -111,7 +111,19 @@ function main(argv) {
     process.exit(2);
   }
   const env = mergeAppEnv(readAppEnv(projectRoot()), process.env);
-  const child = spawn(command, args, { stdio: "inherit", env });
+  const bin = join(projectRoot(), "node_modules", ".bin");
+  const pathKey = process.platform === "win32" && env.Path && !env.PATH ? "Path" : "PATH";
+  const childEnv = {
+    ...env,
+    [pathKey]: `${bin}${delimiter}${env[pathKey] || env.PATH || env.Path || ""}`,
+  };
+  const child = spawn(command, args, {
+    stdio: "inherit",
+    env: childEnv,
+    cwd: projectRoot(),
+    // Windows npm bins are .cmd shims; spawn() without a shell cannot see them.
+    shell: process.platform === "win32",
+  });
   // The dev server is long-running and is stopped by signalling this wrapper.
   for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
     process.on(signal, () => child.kill(signal));

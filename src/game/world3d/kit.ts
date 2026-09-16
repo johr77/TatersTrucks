@@ -1,0 +1,28 @@
+export const KIT = {
+  tater: "/game/3dobjects/player-truck.glb",
+  truck: "/game/models/car/truck.glb",
+  truckFlat: "/game/models/car/truck-flat.glb",
+  suv: "/game/models/car/suv.glb",
+  barn: "/game/models/farm/Barn.glb",
+  smallBarn: "/game/models/farm/SmallBarn.glb",
+  openBarn: "/game/models/farm/OpenBarn.glb",
+  silo: "/game/models/farm/Silo.glb",
+  windmill: "/game/models/farm/Windmill.glb",
+  waterTower: "/game/models/farm/WaterTower.glb",
+  farmFence: "/game/models/farm/Fence.glb",
+  treeLarge: "/game/models/race/treeLarge.glb",
+  treeSmall: "/game/models/race/treeSmall.glb",
+  fence: "/game/models/race/fenceStraight.glb",
+  flagCheckers: "/game/models/race/flagCheckers.glb",
+  flagRed: "/game/models/race/flagRed.glb",
+  tent: "/game/models/race/tentClosedLong.glb",
+  grandStand: "/game/models/race/grandStand.glb",
+  lightPost: "/game/models/race/lightPostLarge.glb",
+  garage: "/game/models/race/pitsGarageClosed.glb",
+  cone: "/game/models/city/cone.glb",
+  crate: "/game/models/factory/box-large.glb",
+  grass: "/game/tex/grass.jpg",
+  dirt: "/game/tex/dirt.jpg",
+} as const;
+
+export const ALL_GLB = Object.values(KIT).filter((u) => u.endsWith(".glb"));

@@ -39,6 +39,7 @@ export function GameApp() {
   const [options, setOptions] = useState(false);
   const [hint, setHint] = useState<string | null>(null);
   const [cam, setCam] = useState<CamMode>("chase");
+  const [yardShop, setYardShop] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,9 +66,9 @@ export function GameApp() {
   useEffect(() => {
     const eng = engineRef.current;
     if (!eng) return;
-    eng.input.uiBlock = options || howto;
+    eng.input.uiBlock = options || howto || yardShop;
     if (!options) eng.input.cancelListen();
-  }, [options, howto]);
+  }, [options, howto, yardShop]);
 
   const e = () => engineRef.current;
   const racing = ui.phase === "racing" || ui.phase === "countdown";
@@ -78,6 +79,8 @@ export function GameApp() {
     if (ui.phase === "yard") {
       setCam("chase");
       setHint(null);
+    } else {
+      setYardShop(false);
     }
     if (ui.phase === "test3d") {
       setCam("top");
@@ -102,6 +105,7 @@ export function GameApp() {
             engine={engineRef.current}
             onExit={() => e()?.toTitle()}
             onHint={setHint}
+            onShopEnter={() => setYardShop(true)}
             camMode={cam}
             setCamMode={setCam}
           />
@@ -139,6 +143,9 @@ export function GameApp() {
         />
       )}
       {ui.phase === "shop" && <Shop ui={ui} engine={e()} />}
+      {ui.phase === "yard" && yardShop && (
+        <Shop ui={ui} engine={e()} onClose={() => setYardShop(false)} closeLabel="Back to the yard" />
+      )}
       {ui.phase === "gameover" && (
         <GameOver ui={ui} onRetry={() => e()?.retryRace()} onQuit={() => e()?.toTitle()} />
       )}
@@ -177,6 +184,15 @@ export function GameApp() {
             >
               Options
             </button>
+            {ui.phase === "yard" && (
+              <button
+                type="button"
+                className="h-11 rounded-md border border-border bg-surface/80 px-3 text-sm font-medium text-fg"
+                onClick={() => setYardShop(true)}
+              >
+                Shop
+              </button>
+            )}
             <button
               type="button"
               className="h-11 rounded-md border border-border bg-surface/80 px-3 text-sm font-medium text-fg"
@@ -537,7 +553,17 @@ function Results({ ui, onNext, onTitle }: { ui: UiSnap; onNext: () => void; onTi
   );
 }
 
-function Shop({ ui, engine }: { ui: UiSnap; engine: Engine | null }) {
+function Shop({
+  ui,
+  engine,
+  onClose,
+  closeLabel,
+}: {
+  ui: UiSnap;
+  engine: Engine | null;
+  onClose?: () => void;
+  closeLabel?: string;
+}) {
   const rows: { key: "nitro" | "tires" | "shocks" | "accel" | "topSpeed"; label: string; blurb: string; lvl?: number }[] = [
     { key: "nitro", label: "Nitro bottle", blurb: "One extra burst" },
     { key: "tires", label: "Tires", blurb: "Tighter turning", lvl: ui.upgrades.tires },
@@ -581,10 +607,10 @@ function Shop({ ui, engine }: { ui: UiSnap; engine: Engine | null }) {
       </div>
       <button
         type="button"
-        onClick={() => engine?.nextFromShop()}
+        onClick={() => (onClose ? onClose() : engine?.nextFromShop())}
         className="mt-5 h-11 w-full rounded-md bg-primary text-sm font-semibold text-primary-fg"
       >
-        Next heat
+        {closeLabel ?? "Next heat"}
       </button>
     </Panel>
   );

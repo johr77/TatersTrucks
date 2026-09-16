@@ -1,7 +1,11 @@
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Navigate } from "@tanstack/react-router";
 import { authEnabled, signOut } from "./client";
+import { hasGateSessionMarker } from "./gate-session-marker";
 import { useCurrentUser, useCurrentUserState } from "./use-current-user";
+
+const subscribeToNothing = () => () => {};
+const noGateSessionOnServer = () => false;
 
 /**
  * Auth state components — plain wrappers around `useCurrentUserState()`.
@@ -47,13 +51,20 @@ export function RedirectToSignIn({ to = SIGN_IN_PATH }: { to?: string }) {
 /**
  * Minimal signed-in identity chip + sign-out. Restyle freely (see the
  * `design-ui` skill). Sign-out is only shown when auth is enabled (the
- * disabled-auth dev user has nothing to sign out of).
+ * disabled-auth dev user has nothing to sign out of) and the session is not
+ * gate-materialized — behind the gate the next request signs the viewer
+ * straight back in, so a sign-out control there is a broken loop.
  */
 export function UserButton() {
   const user = useCurrentUser();
   // Sign-out can take a moment (and can fail when deployed), so the control
   // shows it is working and cannot be fired twice.
   const [signingOut, setSigningOut] = useState(false);
+  const gateSession = useSyncExternalStore(
+    subscribeToNothing,
+    hasGateSessionMarker,
+    noGateSessionOnServer,
+  );
   if (!user) return null;
   const label = user.displayName ?? user.primaryEmail ?? "Account";
   return (
@@ -70,7 +81,7 @@ export function UserButton() {
         </span>
       )}
       <span className="text-sm font-medium">{label}</span>
-      {authEnabled && (
+      {authEnabled && !gateSession && (
         <button
           type="button"
           disabled={signingOut}

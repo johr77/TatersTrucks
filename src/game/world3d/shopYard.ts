@@ -41,8 +41,8 @@ export const SHOP_YARD = {
     },
   ] as Building[],
   shops: [
-    { id: "tires", x: -12.5, z: -1.2, r: 4.2, hint: "Tire Barn — shop opens later" },
-    { id: "nitro", x: 12.5, z: -1.2, r: 4.2, hint: "Nitro Shed — shop opens later" },
+    { id: "tires", x: -10, z: 3.5, r: 6.5, hint: "Tire Barn — pull in to shop" },
+    { id: "nitro", x: 10, z: 3.5, r: 6.5, hint: "Nitro Shed — pull in to shop" },
   ] as Zone[],
   exit: { x: 0, z: -24, r: 5.5, id: "exit", hint: "Head out to leave" } as Zone,
 };

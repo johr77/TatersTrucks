@@ -150,6 +150,7 @@ export class Engine {
     this.audio.unlock();
     this.paused = false;
     this.phase = "yard";
+    if (this.money <= 0) this.money = START_MONEY;
     this.emitUi();
   }
 
